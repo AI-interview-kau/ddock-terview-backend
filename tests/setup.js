@@ -10,5 +10,12 @@ global.console = {
   error: jest.fn(),
 };
 
+// Mock database connection for tests
+jest.mock('../src/config/database', () => {
+  return jest.fn(() => {
+    console.log('🗄️ MongoDB Connected: localhost (mocked)');
+  });
+});
+
 // Global test timeout
 jest.setTimeout(30000);

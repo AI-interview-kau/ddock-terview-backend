@@ -119,15 +119,15 @@ Provide a summary including:
     
     let typeDescription = '';
     switch (interviewType) {
-      case 'technical':
-        typeDescription = 'technical skills, coding problems, and domain-specific knowledge';
-        break;
-      case 'behavioral':
-        typeDescription = 'behavioral scenarios, soft skills, and past experiences';
-        break;
-      case 'mixed':
-        typeDescription = 'a mix of technical and behavioral questions';
-        break;
+    case 'technical':
+      typeDescription = 'technical skills, coding problems, and domain-specific knowledge';
+      break;
+    case 'behavioral':
+      typeDescription = 'behavioral scenarios, soft skills, and past experiences';
+      break;
+    case 'mixed':
+      typeDescription = 'a mix of technical and behavioral questions';
+      break;
     }
 
     return `

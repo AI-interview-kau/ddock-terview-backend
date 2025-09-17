@@ -6,5 +6,7 @@
     "!src/app.js"
   ],
   "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
-  "verbose": true
+  "verbose": true,
+  "forceExit": true,
+  "detectOpenHandles": true
 }
