@@ -31,8 +31,7 @@ jobs:
 
       # 4. Gradle로 프로젝트를 빌드 (결과로 .jar 파일 생성)
       - name: Build with Gradle
-        run: ./gradlew build -x test 
-        #TODO: test 원상태로 복구해야함 (-x test 제거)
+        run: ./gradlew build
 
       # 5. AWS에 배포
       - name: Deploy to Elastic Beanstalk
