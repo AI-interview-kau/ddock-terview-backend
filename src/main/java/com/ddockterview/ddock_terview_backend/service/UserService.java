@@ -1,6 +1,8 @@
 package com.ddockterview.ddock_terview_backend.service;
 
 import com.ddockterview.ddock_terview_backend.dto.login.JwtToken;
+import com.ddockterview.ddock_terview_backend.dto.user.UserResponseDto;
+import com.ddockterview.ddock_terview_backend.entity.User;
 import com.ddockterview.ddock_terview_backend.jwt.JwtTokenProvider;
 import com.ddockterview.ddock_terview_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +37,12 @@ public class UserService {
 
         return jwtToken;
     }
+
+    public UserResponseDto getUser(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + userId));
+
+        return new UserResponseDto(user);
+    }
+
 }

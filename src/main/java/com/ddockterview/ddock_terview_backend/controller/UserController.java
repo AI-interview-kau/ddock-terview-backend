@@ -3,13 +3,15 @@ package com.ddockterview.ddock_terview_backend.controller;
 
 import com.ddockterview.ddock_terview_backend.dto.login.LoginRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.login.JwtToken;
+import com.ddockterview.ddock_terview_backend.dto.user.UserResponseDto;
+import com.ddockterview.ddock_terview_backend.entity.User;
 import com.ddockterview.ddock_terview_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -27,6 +29,16 @@ public class UserController {
         log.info("request username = {}, password = {}", userId, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
         return jwtToken;
+    }
+
+    @GetMapping
+    public ResponseEntity<UserResponseDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+
+        String userId = userDetails.getUsername();
+
+        UserResponseDto userResponseDto = userService.getUser(userId);
+
+        return ResponseEntity.ok(userResponseDto);
     }
 
 }
