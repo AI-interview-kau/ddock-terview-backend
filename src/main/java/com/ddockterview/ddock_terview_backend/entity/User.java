@@ -86,4 +86,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void update(String name, String depart, Status status) {
+        this.name = name;
+        this.depart = depart;
+        this.status = status;
+    }
+
 }
