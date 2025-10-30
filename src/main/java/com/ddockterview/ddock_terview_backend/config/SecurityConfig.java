@@ -35,7 +35,12 @@ public class SecurityConfig {
 
                 // 3. .and() 대신 람다식으로 바로 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/login", "/user/join").permitAll() // 허용할 경로
+                        .requestMatchers(
+                                "/user/login",
+                                "/user/join",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll() // 허용할 경로
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
 
