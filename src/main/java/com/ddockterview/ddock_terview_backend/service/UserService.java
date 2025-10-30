@@ -1,14 +1,13 @@
 package com.ddockterview.ddock_terview_backend.service;
 
 import com.ddockterview.ddock_terview_backend.dto.login.JwtToken;
-import com.ddockterview.ddock_terview_backend.dto.user.UserResponseDto;
+import com.ddockterview.ddock_terview_backend.dto.user.UserDto;
 import com.ddockterview.ddock_terview_backend.entity.User;
 import com.ddockterview.ddock_terview_backend.jwt.JwtTokenProvider;
 import com.ddockterview.ddock_terview_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,11 +37,25 @@ public class UserService {
         return jwtToken;
     }
 
-    public UserResponseDto getUser(String userId) {
+    public UserDto getUser(String userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + userId));
 
-        return new UserResponseDto(user);
+        return new UserDto(user);
+    }
+
+    @Transactional
+    public UserDto modifyUser(String userId, UserDto userDto) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(()-> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + userId));
+
+        user.update(
+                userDto.getName(),
+                userDto.getDepart(),
+                userDto.getStatus()
+        );
+
+        return new UserDto(user);
     }
 
 }

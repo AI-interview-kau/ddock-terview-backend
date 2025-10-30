@@ -3,8 +3,7 @@ package com.ddockterview.ddock_terview_backend.controller;
 
 import com.ddockterview.ddock_terview_backend.dto.login.LoginRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.login.JwtToken;
-import com.ddockterview.ddock_terview_backend.dto.user.UserResponseDto;
-import com.ddockterview.ddock_terview_backend.entity.User;
+import com.ddockterview.ddock_terview_backend.dto.user.UserDto;
 import com.ddockterview.ddock_terview_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +31,18 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserResponseDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<UserDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
 
         String userId = userDetails.getUsername();
-
-        UserResponseDto userResponseDto = userService.getUser(userId);
-
+        UserDto userResponseDto = userService.getUser(userId);
         return ResponseEntity.ok(userResponseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserDto userDto) {
+        String userId = userDetails.getUsername();
+        UserDto responseDto = userService.modifyUser(userId, userDto);
+        return ResponseEntity.ok(responseDto);
     }
 
 }
