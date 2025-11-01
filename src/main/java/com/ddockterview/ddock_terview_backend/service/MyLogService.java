@@ -1,21 +1,23 @@
 package com.ddockterview.ddock_terview_backend.service;
 
-import com.ddockterview.ddock_terview_backend.dto.scoreNfeedback.GrowthReportDto;
-import com.ddockterview.ddock_terview_backend.dto.scoreNfeedback.MyLogResponseDto;
-import com.ddockterview.ddock_terview_backend.dto.scoreNfeedback.SessionLogDto;
+import com.ddockterview.ddock_terview_backend.dto.scoreNfeedback.*;
+import com.ddockterview.ddock_terview_backend.entity.QuestionAfter;
 import com.ddockterview.ddock_terview_backend.entity.ScoreAndFeedback;
 import com.ddockterview.ddock_terview_backend.entity.Session;
 import com.ddockterview.ddock_terview_backend.entity.User;
+import com.ddockterview.ddock_terview_backend.repository.QuestionAfterRepository;
 import com.ddockterview.ddock_terview_backend.repository.ScoreAndFeedbackRepository;
 import com.ddockterview.ddock_terview_backend.repository.SessionRepository;
 import com.ddockterview.ddock_terview_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class MyLogService {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
     private final ScoreAndFeedbackRepository scoreAndFeedbackRepository;
+    private final QuestionAfterRepository questionAfterRepository;
 
     public MyLogResponseDto getMyLog(String userId){
         User user = userRepository.findByUserId(userId)
@@ -32,11 +35,9 @@ public class MyLogService {
 
         List<Session> ascendingSessions = sessionRepository.findAllBySessionUserOrderByCreatedAtAsc(user);
 
-        // 3. (그래프용) GrowthReport DTO 생성
         List<String> labels = new ArrayList<>();
         List<Integer> scores = new ArrayList<>();
 
-        // 세션 목록과 피드백을 임시로 매핑
         List<SessionLogDto> sessionLogDtosAsc = new ArrayList<>();
 
         for (int i = 0; i < ascendingSessions.size(); i++) {
@@ -63,5 +64,30 @@ public class MyLogService {
         return new MyLogResponseDto(growthReport, descendingSessionLogs);
 
     }
+
+    public LogDetailResponseDto getLogDetail(Long sessionId, String authenticatedUserId) {
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("세션을 찾을 수 없습니다: " + sessionId));
+
+        if (!session.getSessionUser().getUserId().equals(authenticatedUserId)) {
+            throw new AccessDeniedException("이 기록에 접근할 권한이 없습니다.");
+        }
+
+        FeedbackDetailDto feedbackDto = scoreAndFeedbackRepository.findBySession(session)
+                .map(FeedbackDetailDto::new)
+                .orElse(new FeedbackDetailDto());
+
+        List<QuestionAfter> questions = questionAfterRepository.findAllBySession(session);
+
+        List<String> questionContents = questions.stream()
+                .map(QuestionAfter::getContent)
+                .collect(Collectors.toList());
+
+        return new LogDetailResponseDto(feedbackDto, questionContents);
+    }
+
+
+
 
 }
