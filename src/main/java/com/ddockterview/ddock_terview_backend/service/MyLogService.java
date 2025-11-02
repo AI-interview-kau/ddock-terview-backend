@@ -1,14 +1,9 @@
 package com.ddockterview.ddock_terview_backend.service;
 
+import com.ddockterview.ddock_terview_backend.dto.feedbackPerQ.QuestionFeedbackDetailDto;
 import com.ddockterview.ddock_terview_backend.dto.scoreNfeedback.*;
-import com.ddockterview.ddock_terview_backend.entity.QuestionAfter;
-import com.ddockterview.ddock_terview_backend.entity.ScoreAndFeedback;
-import com.ddockterview.ddock_terview_backend.entity.Session;
-import com.ddockterview.ddock_terview_backend.entity.User;
-import com.ddockterview.ddock_terview_backend.repository.QuestionAfterRepository;
-import com.ddockterview.ddock_terview_backend.repository.ScoreAndFeedbackRepository;
-import com.ddockterview.ddock_terview_backend.repository.SessionRepository;
-import com.ddockterview.ddock_terview_backend.repository.UserRepository;
+import com.ddockterview.ddock_terview_backend.entity.*;
+import com.ddockterview.ddock_terview_backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -28,6 +23,7 @@ public class MyLogService {
     private final SessionRepository sessionRepository;
     private final ScoreAndFeedbackRepository scoreAndFeedbackRepository;
     private final QuestionAfterRepository questionAfterRepository;
+    private final FeedbackPerQRepository feedbackPerQRepository;
 
     public MyLogResponseDto getMyLog(String userId){
         User user = userRepository.findByUserId(userId)
@@ -85,6 +81,33 @@ public class MyLogService {
                 .collect(Collectors.toList());
 
         return new LogDetailResponseDto(feedbackDto, questionContents);
+    }
+
+    public QuestionFeedbackDetailDto getQuestionFeedbackDetail(Long sessionId, Long inqId, String userId){
+
+        QuestionAfter question = questionAfterRepository.findById(inqId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 질문을 찾을 수 없습니다: " + inqId));
+
+        Session session = question.getSession();
+        if (session == null) {
+            throw new IllegalStateException("질문에 연결된 세션이 없습니다.");
+        }
+
+        // URL로 받은 sessionId와 실제 질문에 연결된 세션 ID가 일치하는지 확인
+        if (!session.getSessionId().equals(sessionId)) {
+            throw new AccessDeniedException("요청한 세션 ID와 질문의 세션 ID가 일치하지 않습니다.");
+        }
+
+        // 해당 세션의 소유자가 인증된 사용자인지 확인
+        if (!session.getSessionUser().getUserId().equals(userId)) {
+            throw new AccessDeniedException("이 기록에 접근할 권한이 없습니다.");
+        }
+
+        FeedbackPerQ feedback = feedbackPerQRepository.findByQuestionAfterIs(question)
+                .orElse(null);
+
+        return new QuestionFeedbackDetailDto(question, feedback);
+
     }
 
 
