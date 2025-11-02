@@ -21,7 +21,8 @@ public class BaseQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "bq_id")
+    private Long bqId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "user_id", nullable = true)

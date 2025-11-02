@@ -1,0 +1,55 @@
+package com.ddockterview.ddock_terview_backend.controller;
+
+import com.ddockterview.ddock_terview_backend.dto.qlist.MyQuestionRequestDto;
+import com.ddockterview.ddock_terview_backend.dto.qlist.SaveQuestionRequestDto;
+import com.ddockterview.ddock_terview_backend.entity.User;
+import com.ddockterview.ddock_terview_backend.service.QuestionListService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import java.net.URI;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/questions")
+public class QuestionListController {
+
+    private final QuestionListService questionListService;
+
+    // 내가 만든 질문 저장
+    @PostMapping("/my")
+    public ResponseEntity<Void> createMyQuestion(@AuthenticationPrincipal User user, // PrincipalDetails 같은 어댑터 클래스를 사용한다고 가정
+                                                 @Valid @RequestBody MyQuestionRequestDto requestDto) {
+        Long questionId = questionListService.createMyQuestion(user, requestDto);
+        return ResponseEntity.created(URI.create("/api/questions/my/" + questionId)).build();
+    }
+
+    // 내가 만든 질문 삭제
+    @DeleteMapping("/my/{questionId}")
+    public ResponseEntity<Void> deleteMyQuestion(@AuthenticationPrincipal User user,
+                                                 @PathVariable Long questionId) {
+        questionListService.deleteMyQuestion(user, questionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // 질문 찜하기 (저장)
+    @PostMapping("/saved")
+    public ResponseEntity<Void> saveQuestion(@AuthenticationPrincipal User user,
+                                             @Valid @RequestBody SaveQuestionRequestDto requestDto) {
+        questionListService.saveQuestion(user, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // 질문 찜하기 취소 (삭제)
+    @DeleteMapping("/saved")
+    public ResponseEntity<Void> deleteSavedQuestion(@AuthenticationPrincipal User user,
+                                                    @RequestParam(value = "bq_id", required = false) Long baseQuestionId,
+                                                    @RequestParam(value = "inq_id", required = false) Long interviewQuestionId) {
+        questionListService.deleteSavedQuestion(user, baseQuestionId, interviewQuestionId);
+        return ResponseEntity.noContent().build();
+    }
+}
