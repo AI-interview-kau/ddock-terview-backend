@@ -28,7 +28,7 @@ public class QuestionItemDto {
 
     // BaseQuestion 엔티티를 DTO로 변환하는 생성자
     public QuestionItemDto(BaseQuestion bq) {
-        this.id = bq.getId();
+        this.id = bq.getBqId();
         this.category = bq.getCategory();
         this.content = bq.getContent();
         this.origin = bq.getOrigin();
