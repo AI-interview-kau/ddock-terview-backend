@@ -28,7 +28,7 @@ public class NoteResponseDto {
         // questionId 조립 로직
         if (note.getBaseQuestion() != null) {
             // "B:" + BaseQuestion ID
-            this.questionId = "B:" + note.getBaseQuestion().getId();
+            this.questionId = "B:" + note.getBaseQuestion().getBqId();
         } else if (note.getQuestionAfter() != null) {
             // "A:" + QuestionAfter ID (After의 A)
             this.questionId = "A:" + note.getQuestionAfter().getInqId();
