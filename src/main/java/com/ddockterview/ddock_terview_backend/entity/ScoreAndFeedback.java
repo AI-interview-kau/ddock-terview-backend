@@ -20,7 +20,8 @@ public class ScoreAndFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scoreId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id")
     private Session session;
 
     private int totalScore;
