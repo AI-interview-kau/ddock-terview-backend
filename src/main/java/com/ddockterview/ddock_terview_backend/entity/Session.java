@@ -44,7 +44,7 @@ public class Session {
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionAfter> questionAfters = new ArrayList<>();
 
-    @OneToOne(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true) // <--- @OneToOne으로 수정
+    @OneToOne(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // <--- @OneToOne으로 수정
     private ScoreAndFeedback scoreAndFeedback;
 
 

@@ -1,6 +1,7 @@
 package com.ddockterview.ddock_terview_backend.controller;
 
 import com.ddockterview.ddock_terview_backend.dto.GlobalResponseDto;
+//import com.ddockterview.ddock_terview_backend.dto.session.SessionInfoResponseDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionResponseDto;
 import com.ddockterview.ddock_terview_backend.service.SessionService;
@@ -38,5 +39,13 @@ public class SessionController {
         GlobalResponseDto response = new GlobalResponseDto(200, "면접 세션 데이터가 성공적으로 삭제되었습니다.");
         return ResponseEntity.ok(response);
     }
+
+//    @GetMapping("/{sessionId}")
+//    public ResponseEntity<SessionInfoResponseDto> getSessionInfo(
+//            @PathVariable Long sessionId
+//    ){
+//        SessionInfoResponseDto responseDto = sessionService.getSessionInfo(sessionId);
+//        return ResponseEntity.ok(responseDto);
+//    }
 
 }

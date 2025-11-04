@@ -1,5 +1,6 @@
 package com.ddockterview.ddock_terview_backend.service;
 
+//import com.ddockterview.ddock_terview_backend.dto.session.SessionInfoResponseDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionResponseDto;
 import com.ddockterview.ddock_terview_backend.entity.Session;
@@ -63,10 +64,20 @@ public class SessionService {
         sessionRepository.delete(session);
     }
 
+//    public SessionInfoResponseDto getSessionInfo(Long sessionId) {
+//        Session session = sessionRepository.findById(sessionId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 세션을 찾을 수 없습니다: " + sessionId));
+//
+//        return new SessionInfoResponseDto(session);
+//
+//    }
+
     private InterviewerType getRandomInterviewerType() {
         InterviewerType[] types = InterviewerType.values();
         return types[RAND.nextInt(types.length)];
     }
+
+
 
 
 
