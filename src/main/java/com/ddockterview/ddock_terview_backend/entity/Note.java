@@ -26,7 +26,7 @@ public class Note {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bq_id")
+    @JoinColumn(name = "id")
     private BaseQuestion baseQuestion;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -22,7 +22,7 @@ public class SavedQuestion {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bq_id")
+    @JoinColumn(name = "id")
     private BaseQuestion baseQuestion;
 
     @Column(name = "inq_id")
