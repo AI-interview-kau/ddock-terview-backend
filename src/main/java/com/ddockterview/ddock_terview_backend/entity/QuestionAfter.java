@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,6 +36,11 @@ public class QuestionAfter {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @OneToOne(mappedBy = "questionAfter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FeedbackPerQ feedbackPerQ;
 
+    public void updateAnswer(String answer) {
+        this.answer = answer;
+    }
 
 }
