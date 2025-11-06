@@ -1,6 +1,7 @@
 package com.ddockterview.ddock_terview_backend.service;
 
 import com.ddockterview.ddock_terview_backend.dto.qlist.MyQuestionRequestDto;
+import com.ddockterview.ddock_terview_backend.dto.qlist.MyQuestionResponseDto;
 import com.ddockterview.ddock_terview_backend.dto.qlist.SaveQuestionRequestDto;
 import com.ddockterview.ddock_terview_backend.entity.BaseQuestion;
 import com.ddockterview.ddock_terview_backend.entity.SavedQuestion;
@@ -8,6 +9,7 @@ import com.ddockterview.ddock_terview_backend.entity.User;
 import com.ddockterview.ddock_terview_backend.entity.enums.Origin;
 import com.ddockterview.ddock_terview_backend.repository.BaseQuestionRepository;
 import com.ddockterview.ddock_terview_backend.repository.SavedQuestionRepository;
+import com.ddockterview.ddock_terview_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +23,17 @@ public class QuestionListService {
 
     private final BaseQuestionRepository baseQuestionRepository;
     private final SavedQuestionRepository savedQuestionRepository;
+    private final UserRepository userRepository;
 
     // 내가 만든 질문 저장
-    public Long createMyQuestion(User user, MyQuestionRequestDto requestDto) {
+    public MyQuestionResponseDto createMyQuestion(String userId, MyQuestionRequestDto requestDto) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
         BaseQuestion newQuestion = requestDto.toEntity(user);
         baseQuestionRepository.save(newQuestion);
-        return newQuestion.getBqId();
+
+        return new MyQuestionResponseDto(newQuestion);
     }
 
     // 내가 만든 질문 삭제

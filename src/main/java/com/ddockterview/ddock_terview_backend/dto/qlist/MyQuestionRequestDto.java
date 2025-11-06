@@ -11,13 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyQuestionRequestDto {
 
-    private Category category;
     private String content;
 
     public BaseQuestion toEntity(User user) {
         return BaseQuestion.builder()
                 .user(user)
-                .category(this.category)
+                .category(Category.MINE)
                 .content(this.content)
                 .origin(Origin.USER)
                 .build();
