@@ -118,8 +118,11 @@ public class QuestionListService {
     }
 
     // 질문 찜하기 취소 (삭제)
-    public void deleteSavedQuestion(User user, Long bqId, Long inqId) {
-        if (bqId != null) {
+    public void deleteSavedQuestion(String userId, Long bqId, Long inqId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        if (bqId != null && bqId > 0) {
             savedQuestionRepository.deleteByUserAndBaseQuestion_BqId(user, bqId);
         } else if (inqId != null) {
             savedQuestionRepository.deleteByUserAndQuestionAfter_InqId(user, inqId);

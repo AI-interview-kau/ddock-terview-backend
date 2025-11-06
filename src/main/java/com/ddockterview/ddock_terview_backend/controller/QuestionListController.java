@@ -47,11 +47,12 @@ public class QuestionListController {
     }
 
     // 질문 찜하기 취소 (삭제)
-    @DeleteMapping("/saved")
-    public ResponseEntity<Void> deleteSavedQuestion(@AuthenticationPrincipal User user,
-                                                    @RequestParam(value = "bq_id", required = false) Long baseQuestionId,
-                                                    @RequestParam(value = "inq_id", required = false) Long interviewQuestionId) {
-        questionListService.deleteSavedQuestion(user, baseQuestionId, interviewQuestionId);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/savedQ")
+    public ResponseEntity<GlobalResponseDto> deleteSavedQuestion(@AuthenticationPrincipal UserDetails userDetails,
+                                                    @RequestBody SaveQuestionRequestDto requestDto) {
+        questionListService.deleteSavedQuestion(userDetails.getUsername(), requestDto.getBqId(), requestDto.getInqId());
+
+        GlobalResponseDto response = new GlobalResponseDto(200, "질문이 성공적으로 삭제되었습니다.");
+        return ResponseEntity.ok(response);
     }
 }
