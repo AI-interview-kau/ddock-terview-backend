@@ -2,8 +2,9 @@ package com.ddockterview.ddock_terview_backend.service;
 
 import com.ddockterview.ddock_terview_backend.dto.qlist.MyQuestionRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.qlist.MyQuestionResponseDto;
-import com.ddockterview.ddock_terview_backend.dto.qlist.SaveQuestionRequestDto;
-import com.ddockterview.ddock_terview_backend.dto.qlist.SaveQuestionResponseDto;
+import com.ddockterview.ddock_terview_backend.dto.savedQ.SaveQuestionListDto;
+import com.ddockterview.ddock_terview_backend.dto.savedQ.SaveQuestionRequestDto;
+import com.ddockterview.ddock_terview_backend.dto.savedQ.SaveQuestionResponseDto;
 import com.ddockterview.ddock_terview_backend.entity.BaseQuestion;
 import com.ddockterview.ddock_terview_backend.entity.QuestionAfter;
 import com.ddockterview.ddock_terview_backend.entity.SavedQuestion;
@@ -17,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +78,6 @@ public class QuestionListService {
             throw new IllegalArgumentException("찜할 질문의 ID를 제공해야 합니다.");
         }
 
-
     }
 
     private SaveQuestionResponseDto saveBaseQuestion(User user, Long baseQuestionId) {
@@ -129,5 +131,27 @@ public class QuestionListService {
         } else {
             throw new IllegalArgumentException("찜 취소할 질문의 ID를 제공해야 합니다.");
         }
+    }
+
+    // 찜한 질문 목록 조회
+    @Transactional(readOnly = true)
+    public SaveQuestionListDto getSavedQuestions(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        List<SavedQuestion> savedQuestions = savedQuestionRepository.findAllByUser(user);
+
+        List<String> contents = savedQuestions.stream()
+                .map(savedQuestion -> {
+                    if (savedQuestion.getBaseQuestion() != null) {
+                        return savedQuestion.getBaseQuestion().getContent();
+                    } else if (savedQuestion.getQuestionAfter() != null) {
+                        return savedQuestion.getQuestionAfter().getContent();
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
+
+        return new SaveQuestionListDto(contents);
     }
 }
