@@ -1,4 +1,4 @@
-package com.ddockterview.ddock_terview_backend.dto.qlist;
+package com.ddockterview.ddock_terview_backend.dto.savedQ;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
