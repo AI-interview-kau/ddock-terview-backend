@@ -8,6 +8,7 @@ import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SavedQuestionRepository extends JpaRepository<SavedQuestion, Long> {
@@ -21,4 +22,6 @@ public interface SavedQuestionRepository extends JpaRepository<SavedQuestion, Lo
 
     @Transactional
     void deleteByUserAndQuestionAfter_InqId(User user, Long inqId);
+
+    List<SavedQuestion> findAllByUser(User user);
 }
