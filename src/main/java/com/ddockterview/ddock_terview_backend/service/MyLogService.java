@@ -76,11 +76,15 @@ public class MyLogService {
 
         List<QuestionAfter> questions = questionAfterRepository.findAllBySession(session);
 
-        List<String> questionContents = questions.stream()
-                .map(QuestionAfter::getContent)
+        List<QuestionDetailDto> questionDetails = questions.stream()
+                .map(question -> new QuestionDetailDto(
+                        question.getInqId(),
+                        question.getContent(),
+                        question.getIsTailQ()
+                ))
                 .collect(Collectors.toList());
 
-        return new LogDetailResponseDto(feedbackDto, questionContents);
+        return new LogDetailResponseDto(feedbackDto, questionDetails);
     }
 
     public QuestionFeedbackDetailDto getQuestionFeedbackDetail(Long sessionId, Long inqId, String userId){
