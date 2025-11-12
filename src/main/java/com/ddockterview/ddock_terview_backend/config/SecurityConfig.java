@@ -32,7 +32,7 @@ public class SecurityConfig {
                 // 1. httpBasic, csrf 설정 변경
                 .httpBasic(basic -> basic.disable())
                 .csrf(csrf -> csrf.disable())
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 // 2. 세션 관리 설정 변경
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -61,20 +61,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // 프론트엔드 로컬 주소 허용
-        config.setAllowedOrigins(List.of(
-                "https://ddock-terview.link",
-                "https://*.ddock-terview.link",
-                "https://ddock-terview-frontend-quintillion0113s-projects.vercel.app",
-                "http://localhost:3000"));
-
-        // 허용할 HTTP 메서드
+        config.setAllowedOrigins(List.of("https://ddock-terview.link", "http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-
-        // 허용할 HTTP 헤더
         config.setAllowedHeaders(List.of("*"));
-
-        // 자격증명(쿠키 등) 허용
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
