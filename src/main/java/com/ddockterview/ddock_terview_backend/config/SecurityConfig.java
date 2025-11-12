@@ -61,9 +61,9 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // 프론트엔드 로컬 주소 허용
-        config.setAllowedOrigins(List.of(
-                "https://ddock-terview.link",
+        config.setAllowedOriginPatterns(List.of(
                 "https://*.ddock-terview.link",
+                "https://ddock-terview.link",
                 "https://ddock-terview-frontend-quintillion0113s-projects.vercel.app",
                 "http://localhost:3000"));
 
