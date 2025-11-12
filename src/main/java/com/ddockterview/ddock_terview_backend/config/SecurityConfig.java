@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,7 +39,7 @@ public class SecurityConfig {
 
                 // 3. .and() 대신 람다식으로 바로 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(org.springframework.web.cors.CorsUtils::isPreFlightRequest).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/actuator/health",
                                 "/user/login",
@@ -56,30 +57,30 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration config = new CorsConfiguration();
-//
-//        // 프론트엔드 로컬 주소 허용
-//        config.setAllowedOrigins(List.of(
-//                "https://ddock-terview.link",
-//                "https://*.ddock-terview.link",
-//                "https://ddock-terview-frontend-quintillion0113s-projects.vercel.app",
-//                "http://localhost:3000"));
-//
-//        // 허용할 HTTP 메서드
-//        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-//
-//        // 허용할 HTTP 헤더
-//        config.setAllowedHeaders(List.of("*"));
-//
-//        // 자격증명(쿠키 등) 허용
-//        config.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 위 설정 적용
-//        return source;
-//    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 프론트엔드 로컬 주소 허용
+        config.setAllowedOrigins(List.of(
+                "https://ddock-terview.link",
+                "https://*.ddock-terview.link",
+                "https://ddock-terview-frontend-quintillion0113s-projects.vercel.app",
+                "http://localhost:3000"));
+
+        // 허용할 HTTP 메서드
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+        // 허용할 HTTP 헤더
+        config.setAllowedHeaders(List.of("*"));
+
+        // 자격증명(쿠키 등) 허용
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 위 설정 적용
+        return source;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
