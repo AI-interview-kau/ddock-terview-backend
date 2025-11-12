@@ -38,7 +38,6 @@ public class SecurityConfig {
 
                 // 3. .and() 대신 람다식으로 바로 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(org.springframework.web.cors.CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers(
                                 "/actuator/health",
                                 "/user/login",
@@ -62,7 +61,6 @@ public class SecurityConfig {
 
         // 프론트엔드 로컬 주소 허용
         config.setAllowedOriginPatterns(List.of(
-                "https://*.ddock-terview.link",
                 "https://ddock-terview.link",
                 "https://ddock-terview-frontend-quintillion0113s-projects.vercel.app",
                 "http://localhost:3000"));
