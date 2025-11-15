@@ -30,7 +30,7 @@ public class QuestionAfter {
     private String content;
 
     private Boolean isTailQ;
-    private String s3key;
+    private String videoUrl;
     private String answer;
 
     @CreatedDate
