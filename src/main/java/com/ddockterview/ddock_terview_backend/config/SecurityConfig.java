@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/user/join",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/session/**"
+                                "/session/**",
+                                "/api/feedback"
                         ).permitAll() // 허용할 경로
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )

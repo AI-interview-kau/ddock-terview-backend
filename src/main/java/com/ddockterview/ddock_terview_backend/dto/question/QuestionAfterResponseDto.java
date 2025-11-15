@@ -23,7 +23,7 @@ public class QuestionAfterResponseDto {
         this.inqId = entity.getInqId();
         this.content = entity.getContent();
         this.isTailQ = entity.getIsTailQ();
-        this.s3Key = entity.getS3key();
+        this.s3Key = entity.getVideoUrl();
         this.answer = entity.getAnswer();
         this.createdAt = entity.getCreatedAt();
 

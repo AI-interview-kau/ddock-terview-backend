@@ -8,13 +8,13 @@ import lombok.Getter;
 public class QuestionFeedbackDetailDto {
 
     private String content;
-    private String s3key;
+    private String videoUrl;
     private String behavefeedback;
     private String langfeedback;
 
     public QuestionFeedbackDetailDto(QuestionAfter question, FeedbackPerQ feedback) {
         this.content = question.getContent();
-        this.s3key = question.getS3key();
+        this.videoUrl = question.getVideoUrl();
 
         if (feedback != null) {
             this.behavefeedback = feedback.getBehavefeedback();

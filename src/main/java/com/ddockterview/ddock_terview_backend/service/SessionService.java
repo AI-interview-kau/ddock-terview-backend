@@ -87,32 +87,32 @@ public class SessionService {
 
 
 
-    /**
-     * S3 업로드 완료 후 영상 분석을 처리하는 메서드
-     * @param user 현재 로그인한 사용자
-     * @param requestDto s3Key, sessionId, questionId 정보
-     */
-    public void processVideoAnalysis(User user, UploadCompleteRequestDto requestDto) {
-        // 1. 요청 유효성 검증 (해당 세션이 사용자의 것이 맞는지 등)
-        Session session = sessionRepository.findById(requestDto.getSessionId())
-                .orElseThrow(() -> new NoSuchElementException("해당 세션을 찾을 수 없습니다. id=" + requestDto.getSessionId()));
-
-        if (!session.getSessionUser().getUserId().equals(user.getUserId())) {
-            throw new SecurityException("세션에 접근할 권한이 없습니다.");
-        }
-
-        // 2. 분석을 위한 다운로드 URL 발급
-        String downloadUrl = s3LinkService.getDownloadUrl(requestDto.getS3Key());
-        log.info("S3 Download URL for analysis: {}", downloadUrl);
-
-        // 3. (향후 구현) Google Cloud Gemini API로 분석 요청
-        // log.info("Sending video to Google Cloud AI for analysis...");
-        // geminiApiClient.analyzeVideo(downloadUrl, requestDto.getQuestionId());
-
-        // 4. (향후 구현) 분석 결과 DB에 저장
-        // - QuestionAfter 테이블에 s3Key, videoUrl(downloadUrl) 등 저장
-        // - ScoreAndFeedback 테이블에 분석 결과 저장
-        log.info("Video analysis process for questionId {} in session {} is triggered.", requestDto.getQuestionId(), requestDto.getSessionId());
-
-    }
+//    /**
+//     * S3 업로드 완료 후 영상 분석을 처리하는 메서드
+//     * @param user 현재 로그인한 사용자
+//     * @param requestDto s3Key, sessionId, questionId 정보
+//     */
+//    public void processVideoAnalysis(User user, UploadCompleteRequestDto requestDto) {
+//        // 1. 요청 유효성 검증 (해당 세션이 사용자의 것이 맞는지 등)
+//        Session session = sessionRepository.findById(requestDto.getSessionId())
+//                .orElseThrow(() -> new NoSuchElementException("해당 세션을 찾을 수 없습니다. id=" + requestDto.getSessionId()));
+//
+//        if (!session.getSessionUser().getUserId().equals(user.getUserId())) {
+//            throw new SecurityException("세션에 접근할 권한이 없습니다.");
+//        }
+//
+//        // 2. 분석을 위한 다운로드 URL 발급
+//        String downloadUrl = s3LinkService.getDownloadUrl(requestDto.getS3Key());
+//        log.info("S3 Download URL for analysis: {}", downloadUrl);
+//
+//        // 3. (향후 구현) Google Cloud Gemini API로 분석 요청
+//        // log.info("Sending video to Google Cloud AI for analysis...");
+//        // geminiApiClient.analyzeVideo(downloadUrl, requestDto.getQuestionId());
+//
+//        // 4. (향후 구현) 분석 결과 DB에 저장
+//        // - QuestionAfter 테이블에 s3Key, videoUrl(downloadUrl) 등 저장
+//        // - ScoreAndFeedback 테이블에 분석 결과 저장
+//        log.info("Video analysis process for questionId {} in session {} is triggered.", requestDto.getQuestionId(), requestDto.getSessionId());
+//
+//    }
 }
