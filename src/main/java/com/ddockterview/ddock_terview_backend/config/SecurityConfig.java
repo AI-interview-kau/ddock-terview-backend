@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/session/**",
-                                "/api/feedback"
+                                "/api/feedback",
+                                "/api/feedback/"
                         ).permitAll() // 허용할 경로
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
