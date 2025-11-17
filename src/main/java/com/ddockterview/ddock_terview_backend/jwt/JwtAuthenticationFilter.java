@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warn("Invalid JWT token received: " + e.getMessage());
         }
 
 
