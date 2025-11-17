@@ -1,7 +1,7 @@
 package com.ddockterview.ddock_terview_backend.service;
 
 //import com.ddockterview.ddock_terview_backend.dto.session.SessionInfoResponseDto;
-import com.ddockterview.ddock_terview_backend.dto.s3.UploadCompleteRequestDto;
+//import com.ddockterview.ddock_terview_backend.dto.s3.UploadCompleteRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.session.SessionResponseDto;
 import com.ddockterview.ddock_terview_backend.entity.Session;
@@ -29,7 +29,7 @@ public class SessionService {
     private static final Logger log = LoggerFactory.getLogger(SessionService.class);
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
-    private final S3LinkService s3LinkService; // S3LinkService 주입
+//    private final S3LinkService s3LinkService; // S3LinkService 주입
     private static final Random RAND = new Random();
 
     public SessionResponseDto createSession(SessionRequestDto requestDto, String userId) {

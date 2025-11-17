@@ -56,6 +56,7 @@ public class FeedbackService {
                     .session(session)
                     .content(qDto.getContent())
                     .isTailQ(qDto.getIsTailQ())
+                    .answer(qDto.getAnswer())
                     .videoUrl(qDto.getViewableUrl())
                     .build();
             questionAfterRepository.save(questionAfter);
