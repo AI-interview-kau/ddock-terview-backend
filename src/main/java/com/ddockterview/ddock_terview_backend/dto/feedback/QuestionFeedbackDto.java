@@ -20,5 +20,7 @@ public class QuestionFeedbackDto {
     @JsonProperty("isTailQ")
     private Boolean isTailQ;
 
+    private String answer;
+
     private String viewableUrl;
 }
