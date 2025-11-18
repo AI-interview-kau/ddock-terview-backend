@@ -19,6 +19,8 @@ public class FeedbackController {
 
     @PostMapping("/feedback")
     public ResponseEntity<GlobalResponseDto> saveFeedback(@RequestBody FeedbackRequestDto requestDto) {
+        System.out.println(">>> /api/feedback called");
+
         feedbackService.saveAllFeedback(requestDto);
         GlobalResponseDto response = new GlobalResponseDto(200, "모든 피드백을 성공적으로 저장했습니다.");
         return ResponseEntity.ok(response);
