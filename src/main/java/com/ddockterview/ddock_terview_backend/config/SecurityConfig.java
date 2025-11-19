@@ -64,11 +64,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-//        config.setAllowedOriginPatterns(List.of(
-//                "https://ddock-terview.link",
-//                "https://*.ddock-terview.link",
-//                "http://localhost:3000"));
-        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedOriginPatterns(List.of(
+                "https://ddock-terview.link",
+                "https://*.ddock-terview.link",
+                "http://localhost:3000"));
+//        config.setAllowedOriginPatterns(List.of("*"));
 
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
