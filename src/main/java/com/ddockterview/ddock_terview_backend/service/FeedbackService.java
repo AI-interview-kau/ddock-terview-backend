@@ -4,9 +4,13 @@ import com.ddockterview.ddock_terview_backend.dto.feedback.FeedbackRequestDto;
 import com.ddockterview.ddock_terview_backend.dto.feedback.QuestionFeedbackDto;
 import com.ddockterview.ddock_terview_backend.entity.*;
 import com.ddockterview.ddock_terview_backend.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,17 +22,21 @@ public class FeedbackService {
     private final QuestionAfterRepository questionAfterRepository;
     private final ScoreAndFeedbackRepository scoreAndFeedbackRepository;
     private final FeedbackPerQRepository feedbackPerQRepository;
+    private final ObjectMapper objectMapper;
 
-    public void saveAllFeedback(FeedbackRequestDto requestDto) {
-        // 1. User 찾기
+    public void saveAllFeedback(MultipartFile file) throws IOException {
+        // 1. MultipartFile에서 FeedbackRequestDto 읽기
+        FeedbackRequestDto requestDto = objectMapper.readValue(file.getInputStream(), FeedbackRequestDto.class);
+
+        // 2. User 찾기
         User user = userRepository.findByUserId(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + requestDto.getUserId()));
 
-        // 2. 해당 유저의 가장 최근 세션 찾기
+        // 3. 해당 유저의 가장 최근 세션 찾기
         Session session = sessionRepository.findFirstBySessionUserOrderByCreatedAtDesc(user)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 세션을 찾을 수 없습니다."));
 
-        // 3. ScoreAndFeedback 저장
+        // 4. ScoreAndFeedback 저장
         ScoreAndFeedback scoreAndFeedback = ScoreAndFeedback.builder()
                 .session(session)
                 .totalScore(requestDto.getTotalScore())
@@ -50,7 +58,7 @@ public class FeedbackService {
                 .build();
         scoreAndFeedbackRepository.save(scoreAndFeedback);
 
-        // 4. QuestionAfter 및 FeedbackPerQ 저장
+        // 5. QuestionAfter 및 FeedbackPerQ 저장
         for (QuestionFeedbackDto qDto : requestDto.getQuestions()) {
             QuestionAfter questionAfter = QuestionAfter.builder()
                     .session(session)
