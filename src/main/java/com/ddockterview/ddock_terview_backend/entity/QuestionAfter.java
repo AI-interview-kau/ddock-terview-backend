@@ -31,8 +31,6 @@ public class QuestionAfter {
 
     private Boolean isTailQ;
     private String videoUrl;
-
-    @Column(columnDefinition = "TEXT")
     private String answer;
 
     @CreatedDate
