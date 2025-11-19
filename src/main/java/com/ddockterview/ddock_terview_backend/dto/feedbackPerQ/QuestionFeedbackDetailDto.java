@@ -9,12 +9,14 @@ public class QuestionFeedbackDetailDto {
 
     private String content;
     private String videoUrl;
+    private String answer;
     private String behavefeedback;
     private String langfeedback;
 
     public QuestionFeedbackDetailDto(QuestionAfter question, FeedbackPerQ feedback) {
         this.content = question.getContent();
         this.videoUrl = question.getVideoUrl();
+        this.answer = question.getAnswer();
 
         if (feedback != null) {
             this.behavefeedback = feedback.getBehavefeedback();
