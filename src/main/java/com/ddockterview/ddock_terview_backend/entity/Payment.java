@@ -1,6 +1,6 @@
 package com.ddockterview.ddock_terview_backend.entity;
 
-import com.ddockterview.ddock_terview_backend.domain.PaymentStatus;
+import com.ddockterview.ddock_terview_backend.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,13 +18,12 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String itemTitle; // 상품명
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true) // nullable = true, 결제 성공 시 채워짐
     private String impUid; // 포트원 결제 고유 번호
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String merchantUid; // 우리 시스템의 주문 번호
 
     @Column(nullable = false)
@@ -38,16 +37,26 @@ public class Payment {
     private LocalDateTime paymentDate; // 결제일
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public Payment(String itemTitle, String impUid, String merchantUid, Integer amount, PaymentStatus status, User user) {
-        this.itemTitle = itemTitle;
-        this.impUid = impUid;
+    public Payment(String merchantUid, Integer amount, PaymentStatus status, User user, String itemTitle) {
         this.merchantUid = merchantUid;
         this.amount = amount;
         this.status = status;
         this.user = user;
+        this.itemTitle = itemTitle;
+    }
+
+    // 결제 성공 시 상태 변경
+    public void success(String impUid) {
+        this.impUid = impUid;
+        this.status = PaymentStatus.PAID;
+    }
+
+    // 결제 실패 시 상태 변경
+    public void fail() {
+        this.status = PaymentStatus.FAILED;
     }
 }
