@@ -33,7 +33,7 @@ public class PaymentService {
         // 3. 결제 금액 위변조 검증
         // 실제 서비스에서는 DB에서 주문 정보를 조회하여 금액을 비교해야 합니다.
         // 여기서는 요청에 명시된 대로 고정된 금액(예: 1000원)으로 비교합니다.
-        Integer expectedAmount = 1000; // 예시: 이용권 가격
+        Integer expectedAmount = 3500; // 예시: 이용권 가격
         Integer actualAmount = iamportResponse.getResponse().getAmount().intValue();
 
         if (!expectedAmount.equals(actualAmount)) {

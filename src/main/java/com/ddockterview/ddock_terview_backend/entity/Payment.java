@@ -37,18 +37,17 @@ public class Payment {
     @CreationTimestamp
     private LocalDateTime paymentDate; // 결제일
 
-    // 중요: 기존 User 엔티티와 연결하기 위한 필드입니다.
-    // 나중에 주석을 해제하고 실제 User 클래스를 import하여 사용하세요.
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "user_id")
-    // private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
-    public Payment(String itemTitle, String impUid, String merchantUid, Integer amount, PaymentStatus status) {
+    public Payment(String itemTitle, String impUid, String merchantUid, Integer amount, PaymentStatus status, User user) {
         this.itemTitle = itemTitle;
         this.impUid = impUid;
         this.merchantUid = merchantUid;
         this.amount = amount;
         this.status = status;
+        this.user = user;
     }
 }
