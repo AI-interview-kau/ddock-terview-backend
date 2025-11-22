@@ -67,7 +67,9 @@ public class SecurityConfig {
         config.setAllowedOriginPatterns(List.of(
                 "https://ddock-terview.link",
                 "https://*.ddock-terview.link",
-                "http://localhost:3000"));
+                "http://localhost:3000",
+                "https://ddock-terview-dev.ap-northeast-2.elasticbeanstalk.com",
+                "http://ddock-terview-dev.ap-northeast-2.elasticbeanstalk.com"));
 //        config.setAllowedOriginPatterns(List.of("*"));
 
 

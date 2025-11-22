@@ -47,8 +47,8 @@ dependencies {
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
-    // AWS SDK for S3
-    implementation 'software.amazon.awssdk:s3:2.25.42'
+    // Iamport
+    implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
 }
 
 tasks.named('test') {
